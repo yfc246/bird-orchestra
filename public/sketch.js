@@ -18,7 +18,7 @@ socket.on('connect', function () {
 socket.on('data-back', function (data) {
   console.log(data);
   noStroke();
-  fill(data.r, data.g, data.b);
+  fill(data.r, data.g, data.b, 30);
   bird = new Bird(data.x, data.y);
   bird.display();
 });
@@ -32,7 +32,7 @@ function setup() {
 
   let birdInfo = {
     x: random(width),
-    y: random(height / 2, height / 2 + 5),
+    y: random(height / 2, height / 2 + 10),
     r: random(255),
     g: random(255),
     b: random(255),
@@ -43,12 +43,6 @@ function setup() {
 
 }
 
-
-
-function draw() {
-}
-
-
 function mouseClicked() {
 }
 
@@ -56,21 +50,24 @@ function mouseClicked() {
 class Bird {
 
   //the setup function of an object class is a constructor
-  constructor(x, y, r = 20) {
+  constructor(x, y = 20) {
     this.x = x;
     this.y = y;
-    this.r = r;
+    this.r = random(255);
+    this.g = random(255);
+    this.b = random(255);
   }
 
   //define the object's functionality
   display() {
     noStroke();
-    fill("rgb(0,0,0)");
-    // ellipse(this.x, this.y, this.r+30, this.r,);
+    fill(this.r, this.g, this.b);
+    //bird body
     arc(this.x, this.y, 150, 150, -60, 120, PIE);
     triangle(this.x + 23, this.y - 40, this.x + 45, this.y - 80, this.x + 105, this.y - 75);
     triangle(this.x - 36, this.y + 63, this.x - 95, this.y + 150, this.x - 50, this.y + 150);
     fill("rgb(255,255,255)");
+    //bird eye
     ellipse(this.x + 50, this.y - 70, 7)
   }
 
