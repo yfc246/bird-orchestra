@@ -1,15 +1,20 @@
-body{
-    font-family: Arial, sans-serif;
-    font-size: 20px;
+:root {
+  --viewport-h: 70vh;
+  /* determine view port height, so the user can't scoll */
 }
 
-#main-content{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+body {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
 }
 
-input{
+#main-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 16px;
