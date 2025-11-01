@@ -4,7 +4,6 @@ let g;
 let b;
 let x;
 let y;
-let size;
 
 /* ------------------------------- SOCKET code ------------------------------ */
 let socket = io();
@@ -17,11 +16,9 @@ socket.on('connect', function () {
 //4
 socket.on('data-back', function (data) {
   console.log(data);
-  noStroke();
-  fill(data.r, data.g, data.b, 100);
-  bird = new Bird(data.x, data.y);
-  bird.display();
-
+  // Create a new bird and add it to the birds array
+  let newBird = new Bird(data.x, data.y, data.r, data.g, data.b);
+  birds.push(newBird);
 });
 
 /* ----------------------------------- p5 ----------------------------------- */
@@ -29,7 +26,8 @@ socket.on('data-back', function (data) {
 let bg;
 let musicNotes = ["♩", "♪", "♭", "♫", "♬", "♫"];
 let notes = [];
-let bird;
+let birds = []; // Array to store all birds from all clients
+let myBird; // This client's bird
 
 function preload() {
   // preload() loads the image before setup() runs
@@ -40,12 +38,24 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES); // use degrees for easy angles
 
+  // Generate random values for this client's bird
+  let birdX = random(width);
+  let birdY = random(height / 2 - 20, height / 2 + 20);
+  let birdR = random(30, 230);
+  let birdG = random(30, 230);
+  let birdB = random(30, 230);
+
+  // Create this client's bird
+  myBird = new Bird(birdX, birdY, birdR, birdG, birdB);
+  birds.push(myBird); // Add to birds array
+
+  // Send bird info to server (including tail position)
   let birdInfo = {
-    x: random(width),
-    y: random(height / 2 - 20, height / 2 + 20),
-    r: random(30, 230),
-    g: random(30, 230),
-    b: random(30, 230),
+    x: birdX,
+    y: birdY,
+    r: birdR,
+    g: birdG,
+    b: birdB,
   }
 
   //1
@@ -53,10 +63,14 @@ function setup() {
 }
 
 function draw() {
-    background(bg);
-    bird.display();
+  background(bg);
 
-  // update and display active notes
+  // Display all birds
+  for (let i = 0; i < birds.length; i++) {
+    birds[i].display();
+  }
+
+  // Display a music notes
   for (let i = notes.length - 1; i >= 0; i--) {
     let n = notes[i];
     n.display();
@@ -76,6 +90,7 @@ function mousePressed() {
 }
 
 /* --------------------------------- classes -------------------------------- */
+
 //creating a template for bird
 class Bird {
 
@@ -105,10 +120,11 @@ class Bird {
 
 //creating a template for music note
 class Note {
+
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.alpha = 255;
+    this.alpha = 150;
     this.yv = random(-1.5, -2.5); // float upward speed
     this.xv = random(-0.3, 0.3);  // small sideways drift
     this.size = 24;
@@ -118,7 +134,7 @@ class Note {
   move() {
     this.x += this.xv;
     this.y += this.yv;
-    this.alpha -= 2; // fade out
+    this.alpha -= 1; // fade out
   }
 
   display() {
