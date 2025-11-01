@@ -126,7 +126,7 @@ class Note {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.alpha = 150;
+    this.alpha = 100;
     this.yv = random(-1.5, -2.5); // float upward speed
     this.xv = random(-0.3, 0.3);  // small sideways drift
     this.size = 24;
