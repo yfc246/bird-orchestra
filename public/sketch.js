@@ -86,7 +86,9 @@ function draw() {
 
 function mousePressed() {
   // create a note above bird’s head
-  notes.push(new Note(bird.x, bird.y - 80));
+  if (myBird) {
+    notes.push(new Note(myBird.x, myBird.y - 80));
+  }
 }
 
 /* --------------------------------- classes -------------------------------- */
