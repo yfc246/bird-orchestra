@@ -9,11 +9,52 @@ let y;
 let socket = io();
 // console.log(socket);
 
+
+// (yafan/claude) variable to store assigned sound number & default audio state
+let audioStarted = false;
+let pendingSoundNumber = null;
+
+//4. socket on code
 socket.on('connect', function () {
   console.log('Connected');
 });
 
-//4
+//(yafan/claude) listen for new client and play sound
+
+
+//bird sound
+socket.on('assign-sound', function(soundNumber) {
+  console.log(`Assigned sound ${soundNumber}`);
+  pendingSoundNumber = soundNumber; // Save for later
+  
+  // if (audioStarted) {
+  //   playBirdSound(soundNumber);
+  // }
+  playBirdSound(soundNumber);
+
+});
+
+//(yafan/claude) receive message from server so that it plays sound to every client connected to server
+socket.on('play-sound-all', function(soundNumber) {
+  console.log(`Received play-sound-all for sound ${soundNumber}`); 
+
+  // if (audioStarted) {
+  //   playBirdSound(soundNumber);
+  // }
+
+    playBirdSound(soundNumber);
+
+});
+
+function playBirdSound(soundNumber) {
+  
+ if (birdSounds[soundNumber]) {
+    birdSounds[soundNumber].play();
+    console.log(`Playing preloaded sound ${soundNumber}`);
+  }
+}
+
+//bird graphic
 socket.on('data-back', function (data) {
   console.log(data);
   // Create a new bird and add it to the birds array
@@ -28,10 +69,15 @@ let musicNotes = ["♩", "♪", "♭", "♫", "♬", "♫"];
 let notes = [];
 let birds = []; // Array to store all birds from all clients
 let myBird; // This client's bird
+let birdSounds = [];//array to store bird sound files 
 
 function preload() {
   // preload() loads the image before setup() runs
   bg = loadImage('links/background.jpg');
+
+  for (let i = 1; i <= 8; i++) {
+    birdSounds[i] = loadSound(`links/bird_${i}.wav`);
+  }
 }
 
 function setup() {
@@ -85,7 +131,21 @@ function draw() {
 }
 
 function mousePressed() {
-  // create a note above bird’s head
+  //enable audio
+  if (!audioStarted) {
+    userStartAudio();
+    audioStarted = true;
+    console.log('Audio enabled!');
+  }
+
+  console.log(`Emitting sound ${pendingSoundNumber}, audioStarted: ${audioStarted}`);
+  
+  // Emit to server instead of playing locally
+  if (pendingSoundNumber) {
+    socket.emit('play-sound', pendingSoundNumber);
+  }
+  
+  // Create a note above bird's head
   if (myBird) {
     notes.push(new Note(myBird.x, myBird.y - 80));
   }
