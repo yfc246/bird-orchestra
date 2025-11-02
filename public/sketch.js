@@ -23,10 +23,10 @@ socket.on('connect', function () {
 
 
 //bird sound
-socket.on('assign-sound', function(soundNumber) {
+socket.on('assign-sound', function (soundNumber) {
   console.log(`Assigned sound ${soundNumber}`);
   pendingSoundNumber = soundNumber; // Save for later
-  
+
   // if (audioStarted) {
   //   playBirdSound(soundNumber);
   // }
@@ -35,20 +35,28 @@ socket.on('assign-sound', function(soundNumber) {
 });
 
 //(yafan/claude) receive message from server so that it plays sound to every client connected to server
-socket.on('play-sound-all', function(soundNumber) {
-  console.log(`Received play-sound-all for sound ${soundNumber}`); 
+socket.on('play-sound-all', function (data) {
+  console.log(`Received play-sound-all for sound ${data.soundNumber}`);
 
   // if (audioStarted) {
   //   playBirdSound(soundNumber);
   // }
 
-    playBirdSound(soundNumber);
+  playBirdSound(data.soundNumber);
+
+  // (daphne) create note at the position sent from server
+  // 3 notes one by one 
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => {
+      notes.push(new Note(data.birdX, data.birdY - 80));
+    }, i * 500);
+  }
 
 });
 
 function playBirdSound(soundNumber) {
-  
- if (birdSounds[soundNumber]) {
+
+  if (birdSounds[soundNumber]) {
     birdSounds[soundNumber].play();
     console.log(`Playing preloaded sound ${soundNumber}`);
   }
@@ -85,17 +93,19 @@ function setup() {
   angleMode(DEGREES); // use degrees for easy angles
 
   // Generate random values for this client's bird
-  let birdX = random(width);
-  let birdY = random(height / 2 - 20, height / 2 + 20);
+  let birdX = random(100, width / 2 - 10);
+  let birdY = random(height / 2 - 30, height / 2 + 80);
   let birdR = random(30, 230);
   let birdG = random(30, 230);
   let birdB = random(30, 230);
 
-  // Create this client's bird
-  myBird = new Bird(birdX, birdY, birdR, birdG, birdB);
-  birds.push(myBird); // Add to birds array
+  // Store my loco bird's position data 
+  myBirdData = {
+    x: birdX,
+    y: birdY
+  };
 
-  // Send bird info to server (including tail position)
+  // Send bird info to server
   let birdInfo = {
     x: birdX,
     y: birdY,
@@ -122,7 +132,7 @@ function draw() {
     n.display();
     n.move();
 
-    // remove note once it floats too high
+    // note disappear
     if (n.alpha <= 0 || n.y < 0) {
       notes.splice(i, 1);
     }
@@ -139,15 +149,16 @@ function mousePressed() {
   }
 
   console.log(`Emitting sound ${pendingSoundNumber}, audioStarted: ${audioStarted}`);
-  
+
   // Emit to server instead of playing locally
-  if (pendingSoundNumber) {
-    socket.emit('play-sound', pendingSoundNumber);
-  }
-  
-  // Create a note above bird's head
-  if (myBird) {
-    notes.push(new Note(myBird.x, myBird.y - 80));
+  if (pendingSoundNumber && myBirdData) {
+    socket.emit('play-sound', {
+      soundNumber: pendingSoundNumber,
+
+      //(daphne) sending the location data of the bird
+      birdX: myBirdData.x,
+      birdY: myBirdData.y
+    });
   }
 }
 
@@ -170,12 +181,11 @@ class Bird {
   display() {
     noStroke();
     fill(this.r, this.g, this.b, 100);
-    //bird body
-    arc(this.x, this.y, 150, 150, -60, 120, PIE);
-    triangle(this.x + 23, this.y - 40, this.x + 45, this.y - 80, this.x + 105, this.y - 75);
-    triangle(this.x - 36, this.y + 63, this.x - 95, this.y + this.tail, this.x - 50, this.y + this.tail);
-    fill("rgb(255,255,255)");
+    arc(this.x, this.y, 150, 150, -60, 120, PIE); //bird body
+    triangle(this.x + 23, this.y - 40, this.x + 45, this.y - 80, this.x + 105, this.y - 75); //bird head
+    triangle(this.x - 36, this.y + 63, this.x - 95, this.y + this.tail, this.x - 50, this.y + this.tail); //bird tail
     //bird eye
+    fill("rgba(247, 239, 233, 1)");
     ellipse(this.x + 50, this.y - 70, 7)
   }
 }

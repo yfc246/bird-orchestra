@@ -38,11 +38,16 @@ io.on('connection', function(socket){
     io.emit('data-back', data);
   });
 
-  //(yafan) added so that sound is broadcasted to all clients connected to the server
-    socket.on('play-sound', function(soundNumber){
-    console.log(`Playing sound ${soundNumber} for all clients`);
-    io.emit('play-sound-all', soundNumber);
+ //(yafan) added so that sound is broadcasted to all clients connected to the server
+ //(daphne) added the location data of the bird so the music notes can be added to that location
+socket.on('play-sound', function(data){
+  console.log(`Playing sound ${data.soundNumber} for all clients at position (${data.birdX}, ${data.birdY})`);
+  io.emit('play-sound-all', {
+    soundNumber: data.soundNumber,
+    birdX: data.birdX,
+    birdY: data.birdY
   });
+});
 
   //the rest of the server socket code
   socket.on('disconnect', function(){
