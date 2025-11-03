@@ -50,8 +50,7 @@ socket.on('play-sound-all', function (data) {
 
   playBirdSound(data.soundNumber);
 
-  // (daphne) create note at the position sent from server
-  // 3 notes one by one 
+  // create note at the position sent from server
   for (let i = 0; i < 3; i++) {
     setTimeout(() => {
       notes.push(new Note(data.birdX, data.birdY - 80));
@@ -108,7 +107,7 @@ function setup() {
 
   // Generate random values for this client's bird
   let birdX = random(100, width / 2 - 10);
-  let birdY = random(height / 2 - 30, height / 2 + 80);
+  let birdY = random(height / 2 - 50, height / 2 + 50);
   let birdR = random(30, 230);
   let birdG = random(30, 230);
   let birdB = random(30, 230);
@@ -159,6 +158,12 @@ function draw() {
 }
 
 function mousePressed(){
+    //enable audio
+  // if (!audioStarted) {
+  //   userStartAudio();
+  //   audioStarted = true;
+  //   console.log('Audio enabled!');
+  // }
 
   // Emit to server instead of playing locally
   if (pendingSoundNumber && myBirdData) {
@@ -236,7 +241,7 @@ function windowResized() {
 function lines() {
 
   // Set the line style
-  stroke(85, 80, 75); // Dark brownish-gray
+  stroke(85, 80, 75, 100); // Dark brownish-gray
   strokeWeight(1.5);
   noFill();
 

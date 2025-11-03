@@ -3,8 +3,14 @@
   /* determine view port height, so the user can't scoll */
 }
 
+@font-face {
+  font-family: 'MyFont';
+  src: url('links/CenturyGothicPro.otf') format('truetype');
+  font-style: normal;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'MyFont';
   font-size: 20px;
   margin: 0;
 }
@@ -25,7 +31,46 @@ input {
 
 #headline {
   position: absolute;
-  left: 20px;
-  top: 20px;
-  background-color: blue;
+  left: 60px;
+  top: 30px;
+}
+
+h1 {
+  font-family: 'MyFont';
+  font-size: 1.3rem;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  margin-bottom: 7px;
+  color: rgb(85, 80, 75, 100);
+}
+
+h2 {
+  font-family: 'MyFont';
+  font-size: 1rem;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  margin-bottom: 7px;
+  color: rgb(85, 80, 75, 100);
+}
+
+textarea {
+  width: 30%;
+  padding: 0.75%;
+  font-family: 'MyFont';
+  font-size: 1rem;
+  background-color: transparent;
+  border-radius: 20px;
+  border-color: transparent;
+  height: 1.3rem;
+  resize: none;
+  /* no resizing for user */
+  outline: none;
+  /* remove default blue outline */
+  line-height: 1;
+  /* reduce line height to minimize spacing */
+  overflow: hidden;
+  /* hide scrollbars since it's single line input */
 }
