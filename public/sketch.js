@@ -89,12 +89,11 @@ let birdSounds = [];//array to store bird sound files
 let time = 0; //for bezier curves (yafan)
 
 function preload() {
-  console.log('hiiiii');
 
   // preload() loads the image before setup() runs
   bg = loadImage('links/background.jpg');
 
-  for (let i = 1; i <= 8; i++) {
+  for (let i = 1; i <= 6; i++) {
     birdSounds[i] = loadSound(`links/bird_${i}.wav`);
   }
 }
