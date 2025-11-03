@@ -6,10 +6,9 @@ let x;
 let y;
 
 
-
-
-
-/* ------------------------------- SOCKET code ------------------------------ */
+/* -------------------------------------------------------------------------- */
+/*                                 SOCKET CODE                                */
+/* -------------------------------------------------------------------------- */
 let socket = io();
 // console.log(socket);
 
@@ -42,7 +41,7 @@ socket.on('assign-sound', function (soundNumber) {
 socket.on('play-sound-all', function (data) {
   console.log(`Received play-sound-all for sound ${data.soundNumber}`);
 
-// Only play if this tab's audio has been unlocked by a click
+  // Only play if this tab's audio has been unlocked by a click
   // if (audioStarted) {
   //   playBirdSound(soundNumber);
   // } else {
@@ -77,7 +76,10 @@ socket.on('data-back', function (data) {
   birds.push(newBird);
 });
 
-/* ----------------------------------- p5 ----------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                   P5 CODE                                  */
+/* -------------------------------------------------------------------------- */
 
 let bg;
 let musicNotes = ["♩", "♪", "♭", "♫", "♬", "♫"];
@@ -96,18 +98,11 @@ function preload() {
   for (let i = 1; i <= 8; i++) {
     birdSounds[i] = loadSound(`links/bird_${i}.wav`);
   }
-
-
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES); // use degrees for easy angles
-
-  // Set the line style for bezier curve (yafan)
- // stroke(85, 80, 75); 
-  //strokeWeight(1.5);
-  //noFill(); 
 
   console.log('hiiiii');
 
@@ -133,27 +128,17 @@ function setup() {
     b: birdB,
   }
 
-  //1
+  // Sending data back to server
   socket.emit('data', birdInfo);
 }
 
 function draw() {
 
-background(bg);
-// Set the line style
-  stroke(85, 80, 75); // Dark brownish-gray
-  strokeWeight(1.5);
-  noFill();
+  background(bg);
 
-    // Increment time. You might want to make this smaller for a slower, calmer sine wave.
-  time += 0.1; 
-  
-
+  // Increment time. You might want to make this smaller for a slower, calmer sine wave.
+  time += 0.1;
   lines();
-
-
-
-
 
   // Display all birds
   for (let i = 0; i < birds.length; i++) {
@@ -171,33 +156,23 @@ background(bg);
       notes.splice(i, 1);
     }
   }
-
 }
 
-function mousePressed() {
-  //enable audio
-  // if (!audioStarted) {
-  //   userStartAudio();
-  //   audioStarted = true;
-  //   console.log('Audio enabled!');
-  // }
-
-
-
-  console.log(`Emitting sound ${pendingSoundNumber}`);
+function mousePressed(){
 
   // Emit to server instead of playing locally
   if (pendingSoundNumber && myBirdData) {
-    
+
     socket.emit('play-sound', {
       soundNumber: pendingSoundNumber,
 
-      //(daphne) sending the location data of the bird
+      //sending the location data of the bird
       birdX: myBirdData.x,
       birdY: myBirdData.y
     });
   }
 }
+
 
 /* --------------------------------- classes -------------------------------- */
 
@@ -256,13 +231,18 @@ class Note {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
- } 
+}
 
- function lines() {
+function lines() {
+
+  // Set the line style
+  stroke(85, 80, 75); // Dark brownish-gray
+  strokeWeight(1.5);
+  noFill();
 
   let amplitude = 100; // This controls the height of the wave
 
-    // --- Line 1 ---
+  // --- Line 1 ---
   // sin(time) gives a smooth value between -1 and 1.
   // We add a number inside the sin() to offset its phase (make it start at a different point in its wave)
   let wave1 = sin(time + 0) * amplitude;
@@ -277,7 +257,7 @@ function windowResized() {
   // --- Line 2 ---
   // Using (time + 1.5) makes this wave flow differently from Line 1
   let wave2 = sin(time + 0.2) * amplitude;
-  
+
   bezier(
     0, height * 0.5,           // Start point
     width * 0.33, height * 0.37 + wave2, // Control 1 (animated)
@@ -287,7 +267,7 @@ function windowResized() {
 
   // --- Line 3 ---
   let wave3 = sin(time + 0.1) * amplitude;
-  
+
   bezier(
     0, height * 0.6,           // Start point
     width * 0.33, height * 0.44 + wave3, // Control 1
@@ -297,7 +277,7 @@ function windowResized() {
 
   // --- Line 4 ---
   let wave4 = sin(time + 0.3) * amplitude;
-  
+
   bezier(
     0, height * 0.65,           // Start point
     width * 0.28, height * 0.51 + wave4, // Control 1
@@ -307,11 +287,11 @@ function windowResized() {
 
   // --- Line 5 ---
   let wave5 = sin(time + 0.5) * amplitude;
-  
+
   bezier(
     0, height * 0.72,           // Start point
     width * 0.35, height * 0.58 + wave5, // Control 1
     width * 0.62, height * 0.58 - wave5, // Control 2
     width, height * 0.77          // End point
   );
- }
+}
