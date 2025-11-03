@@ -49,8 +49,6 @@ socket.on('play-sound', function(data){
   });
 });
 
-  //the rest of the server socket code
-  socket.on('disconnect', function(){
-    console.log(`A client disconnected: ${socket.id}`);
-  });
+
+
 });

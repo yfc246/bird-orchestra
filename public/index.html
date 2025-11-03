@@ -7,17 +7,29 @@
   <title>bird orchestra</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/addons/p5.sound.min.js"></script>
+
 </head>
 
 <body>
-  <!--input box for user text-->
-  <div id="main-content">
+  <div id="headline">
+  <h1>hi</h1>
+    <textarea id="wordInput" placeholder="type in here"></textarea>
+    <button id="sendButton">⇢</button>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/2.0.5/p5.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/planck-js@0.3.0/dist/planck.min.js"></script>
-  <script src="https://q5js.org/q5.js"></script>
+
+  <div id="main-content">
+
+  </div>
+
+  
+
+
+<!--<script src="https://cdn.jsdelivr.net/npm/planck-js@0.3.0/dist/planck.min.js"></script> -->
+ <!-- <script src="https://q5js.org/q5.js"></script>-->
 
   <script src="sketch.js"></script>
 </body>

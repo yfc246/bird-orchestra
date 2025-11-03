@@ -6,6 +6,7 @@
 body {
   font-family: Arial, sans-serif;
   font-size: 20px;
+  margin: 0;
 }
 
 #main-content {
@@ -20,4 +21,11 @@ input {
   margin: 16px;
   padding: 8px;
   background-color: #f9f9f9;
+}
+
+#headline {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  background-color: blue;
 }
