@@ -6,13 +6,15 @@
 @font-face {
   font-family: 'MyFont';
   src: url('links/CenturyGothicPro.otf') format('truetype');
-  font-style: normal;
 }
 
 body {
   font-family: 'MyFont';
-  font-size: 20px;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
   margin: 0;
+  color: rgb(85, 80, 75, 100);
 }
 
 #main-content {
@@ -56,11 +58,10 @@ input {
 
 h1 {
   font-family: 'MyFont';
-  font-size: 1.3rem;
+  font-size: 2.3rem;
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  line-height: 1.2;
   margin-bottom: 7px;
   color: rgb(85, 80, 75, 100);
 }
@@ -70,9 +71,13 @@ h2 {
   font-size: 1rem;
   font-weight: normal;
   letter-spacing: 0.05em;
-  line-height: 1.2;
+  line-height: 1.3;
   margin-bottom: 7px;
   color: rgb(85, 80, 75, 100);
+}
+
+p{
+font-style: oblique;
 }
 
 textarea {
@@ -108,6 +113,7 @@ button {
   font-family: 'MyFont';
   font-size: 1rem;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 /* Animation */

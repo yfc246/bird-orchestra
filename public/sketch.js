@@ -95,7 +95,7 @@ socket.on('word-back', (data) => {
   wordElement.style.position = 'absolute';
   wordElement.style.left = Math.random() * (90 - 40) + 40 + 'vw';
   wordElement.style.top = Math.random() * (20 - 5) + 5 + 'vh';
-  wordElement.style.animation = 'fadeOut 5s forwards'; //fading animation
+  wordElement.style.animation = 'fadeOut 8s forwards'; //fading animation
 
   //Add the element with the message to the page
   word.appendChild(wordElement);
@@ -287,8 +287,8 @@ function windowResized() {
 function lines() {
 
   // Set the line style
-  stroke(85, 80, 75, 100); // Dark brownish-gray
-  strokeWeight(1.5);
+  stroke(85, 80, 75, 90); // Dark brownish-gray
+  strokeWeight(2);
   noFill();
 
   let amplitude = 100; // This controls the height of the wave
