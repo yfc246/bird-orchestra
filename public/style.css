@@ -35,12 +35,28 @@ input {
   top: 30px;
 }
 
+#textbox {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  /* puts textarea + button in a row */
+  justify-content: center;
+  /* centers them horizontally */
+  align-items: center;
+  /* aligns vertically */
+  gap: 10px;
+  /* adds space between them */
+}
+
+
 h1 {
   font-family: 'MyFont';
   font-size: 1.3rem;
   font-weight: normal;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   line-height: 1.2;
   margin-bottom: 7px;
   color: rgb(85, 80, 75, 100);
@@ -57,13 +73,15 @@ h2 {
 }
 
 textarea {
-  width: 30%;
+  width: 70%;
   padding: 0.75%;
   font-family: 'MyFont';
   font-size: 1rem;
   background-color: transparent;
   border-radius: 20px;
-  border-color: transparent;
+  border-color: rgb(85, 80, 75, 100);
+  color: rgb(85, 80, 75, 100);
+  padding: 5px 5px;
   height: 1.3rem;
   resize: none;
   /* no resizing for user */
@@ -73,4 +91,18 @@ textarea {
   /* reduce line height to minimize spacing */
   overflow: hidden;
   /* hide scrollbars since it's single line input */
+}
+
+textarea::placeholder {
+  padding: 5px 5px;
+}
+
+button {
+  padding: 12px 30px;
+  background-color: transparent;
+  color: rgb(85, 80, 75, 100);
+  border: none;
+  font-family: 'MyFont';
+  font-size: 1rem;
+  text-decoration: underline;
 }
