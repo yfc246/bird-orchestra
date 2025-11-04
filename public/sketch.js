@@ -75,6 +75,59 @@ socket.on('data-back', function (data) {
   birds.push(newBird);
 });
 
+/* ---------------- RECEIVE a socket message from the server ---------------- */
+
+//receive a socket message from the server
+let word = document.getElementById('container');
+
+
+//listen for data and log data
+socket.on('word-back', (data) => {
+  console.log("Message arrived!");
+  console.log(data);
+
+  //Create a message string and page element
+  let wordBack = data.word;
+  let wordElement = document.createElement('h2');
+  wordElement.innerHTML = wordBack;
+
+  //Position element randomly on the page
+  wordElement.style.position = 'absolute';
+  wordElement.style.left = Math.random() * (90 - 40) + 40 + 'vw';
+  wordElement.style.top = Math.random() * (20 - 5) + 5 + 'vh';
+  wordElement.style.animation = 'fadeOut 5s forwards'; //fading animation
+
+  //Add the element with the message to the page
+  word.appendChild(wordElement);
+
+});
+
+/* ------------------ SEND a socket message to the Server ------------------ */
+
+let wordInput = document.getElementById('wordInput');
+let sendButton = document.getElementById('sendButton');
+
+sendButton.addEventListener('click', function () {
+  let NewWord = wordInput.value;
+
+  let wordData = {
+    word: NewWord,
+  };
+
+  //Send the message object to the server
+  socket.emit('word', wordData);
+
+  // Clear the input field after sending
+  wordInput.value = '';
+});
+
+// Allow pressing Enter to send
+wordInput.addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') {
+    sendButton.click();
+  }
+});
+
 
 /* -------------------------------------------------------------------------- */
 /*                                   P5 CODE                                  */
@@ -101,7 +154,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES); // use degrees for easy angles
-  
+
   // Generate random values for this client's bird
   let birdX = random(100, width / 2 - 10);
   let birdY = random(height / 2 - 50, height / 2 + 50);
@@ -154,8 +207,8 @@ function draw() {
   }
 }
 
-function mousePressed(){
-    //enable audio
+function mousePressed() {
+  //enable audio
   // if (!audioStarted) {
   //   userStartAudio();
   //   audioStarted = true;

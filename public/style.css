@@ -50,6 +50,9 @@ input {
   /* adds space between them */
 }
 
+#container {
+  position: absolute;
+}
 
 h1 {
   font-family: 'MyFont';
@@ -105,4 +108,18 @@ button {
   font-family: 'MyFont';
   font-size: 1rem;
   text-decoration: underline;
+}
+
+/* Animation */
+
+@keyframes fadeOut {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
 }

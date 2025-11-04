@@ -51,4 +51,17 @@ io.on('connection', function (socket) {
     });
   });
 
+  /* ----------------- Sending MESSAGE data back to client ---------------- */
+  //listen for data from the client
+  socket.on('word', (data) => {
+    //(event name, call back function)
+    console.log("Received a 'word' event");
+    console.log(data);
+
+    // Emit data back to ALL clients (including sender)
+    io.emit('word-back', data);
+  });
+
+
+
 });
