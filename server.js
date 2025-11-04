@@ -29,8 +29,8 @@ io.on('connection', function (socket) {
 
   //2 server side on event
 
-  //(yafan/claude) assign & send sound files, if client exceeds 8, loop to the first and repeat ()
-  let soundNumber = (clientCount % 8) + 1;
+  //(yafan/claude) assign & send sound files, if client exceeds 6, loop to the first and repeat ()
+  let soundNumber = (clientCount % 6) + 1;
   clientCount++;
   socket.emit('assign-sound', soundNumber);
 
