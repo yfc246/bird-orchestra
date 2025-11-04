@@ -208,23 +208,19 @@ function draw() {
 }
 
 function mousePressed() {
-  //enable audio
-  // if (!audioStarted) {
-  //   userStartAudio();
-  //   audioStarted = true;
-  //   console.log('Audio enabled!');
-  // }
-
-  // Emit to server instead of playing locally
-  if (pendingSoundNumber && myBirdData) {
-
-    socket.emit('play-sound', {
-      soundNumber: pendingSoundNumber,
-
-      //sending the location data of the bird
-      birdX: myBirdData.x,
-      birdY: myBirdData.y
-    });
+// Only allow clicks above 10% of the screen height
+  if (mouseY < height * 0.9) {
+    // Emit to server instead of playing locally
+    if (pendingSoundNumber && myBirdData) {
+      socket.emit('play-sound', {
+        soundNumber: pendingSoundNumber,
+        // sending the location data of the bird
+        birdX: myBirdData.x,
+        birdY: myBirdData.y
+      });
+    }
+  } else {
+    console.log("Click ignored: below 10% area of the screen.");
   }
 }
 
