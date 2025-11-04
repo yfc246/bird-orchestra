@@ -101,9 +101,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES); // use degrees for easy angles
-
-  console.log('hiiiii');
-
+  
   // Generate random values for this client's bird
   let birdX = random(100, width / 2 - 10);
   let birdY = random(height / 2 - 50, height / 2 + 50);
