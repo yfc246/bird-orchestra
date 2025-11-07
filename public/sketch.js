@@ -14,7 +14,6 @@ let socket = io();
 
 
 // (yafan/claude) variable to store assigned sound number & default audio state
-// let audioStarted = false;
 let pendingSoundNumber = null;
 
 //4. socket on code
@@ -30,23 +29,11 @@ socket.on('assign-sound', function (soundNumber) {
   console.log(`Assigned sound ${soundNumber}`);
   pendingSoundNumber = soundNumber; // Save for later
 
-  // if (audioStarted) {
-  //   playBirdSound(soundNumber);
-  // }
-  // playBirdSound(soundNumber); ❓pending gemini suggestion 
-
 });
 
 //(yafan/claude) receive message from server so that it plays sound to every client connected to server
 socket.on('play-sound-all', function (data) {
   console.log(`Received play-sound-all for sound ${data.soundNumber}`);
-
-  // Only play if this tab's audio has been unlocked by a click
-  // if (audioStarted) {
-  //   playBirdSound(soundNumber);
-  // } else {
-  //   console.log('Audio not started in this tab, blocking sound.');
-  // }
 
   playBirdSound(data.soundNumber);
 
@@ -156,13 +143,13 @@ function setup() {
   angleMode(DEGREES); // use degrees for easy angles
 
   // Generate random values for this client's bird
-  let birdX = random(100, width / 2 - 10);
+  let birdX = random(100, width - 50);
   let birdY = random(height / 2 - 50, height / 2 + 50);
   let birdR = random(30, 230);
   let birdG = random(30, 230);
   let birdB = random(30, 230);
 
-  // Store my loco bird's position data 
+  // Store my local bird's position data for the display of music notes
   myBirdData = {
     x: birdX,
     y: birdY

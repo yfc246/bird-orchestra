@@ -37,13 +37,14 @@ io.on('connection', function (socket) {
   /* -------------------- Sending BIRD data bact to client -------------------- */
   socket.on('data', function (data) {
     console.log(data);
-    //3 server side emit (sending data back to client)
+    //server side emit (sending data back to client)
     io.emit('data-back', data);
   });
 
   /* ----------- Sending BIRD SOUND & MUSIC NOTE data back to client ---------- */
   socket.on('play-sound', function (data) {
     console.log(`Playing sound ${data.soundNumber} for clients at position (${data.birdX}, ${data.birdY})`);
+    //server side emit (sending data back to client)
     io.emit('play-sound-all', {
       soundNumber: data.soundNumber,
       birdX: data.birdX,
@@ -54,10 +55,8 @@ io.on('connection', function (socket) {
   /* ----------------- Sending MESSAGE data back to client ---------------- */
   //listen for data from the client
   socket.on('word', (data) => {
-    //(event name, call back function)
     console.log("Received a 'word' event");
     console.log(data);
-
     // Emit data back to ALL clients (including sender)
     io.emit('word-back', data);
   });
